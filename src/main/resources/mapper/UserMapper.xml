@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.example.csust_hot_wall.entity.User">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="openid" column="openid" jdbcType="INTEGER"/>
+            <result property="openid" column="openid" jdbcType="VARCHAR"/>
             <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
             <result property="imgPath" column="img_path" jdbcType="VARCHAR"/>
             <result property="creationTime" column="creation_time" jdbcType="TIMESTAMP"/>
@@ -19,4 +19,11 @@
         img_path,creation_time,update_time,
         state
     </sql>
+    <select id="selectByOpenid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where
+        openid = #{openid,jdbcType=VARCHAR}
+    </select>
 </mapper>

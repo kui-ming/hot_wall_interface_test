@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 
 /**
@@ -29,6 +31,16 @@ public class Category extends Entity<Category> implements Serializable {
      * 文章数量
      */
     private Integer nums;
+
+    /**
+     * 创建时间
+     */
+    private Date creationTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     /**
      * 状态
@@ -82,15 +94,18 @@ public class Category extends Entity<Category> implements Serializable {
         return sb.toString();
     }
 
+    @Override
     public Category stroke() {
+        setId(null);
+        setCreationTime(new Date());
+        setUpdateTime(new Date());
         setNums(null);
         setState(null);
         return this;
     }
 
+    @Override
     public boolean securityCheck() {
-        boolean check = false;
-        check = getTitle() != null;
-        return check;
+        return isAllNotNull(title);
     }
 }

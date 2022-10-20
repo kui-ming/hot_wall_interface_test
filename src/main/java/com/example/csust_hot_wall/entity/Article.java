@@ -22,9 +22,26 @@ public class Article extends Entity<Article> implements Serializable {
     private Integer id;
 
     /**
+     * 类别id
+     */
+    private Integer categoryId;
+
+    /**
+     * 类别名
+     */
+    @TableField(exist = false)
+    private String category;
+
+    /**
      * 用户id
      */
     private Integer userId;
+
+    /**
+     * 用户名
+     */
+    @TableField(exist = false)
+    private String author;
 
     /**
      * 标题
@@ -75,6 +92,7 @@ public class Article extends Entity<Article> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Article stroke(){
+        setId(null);
         this.setVisitors(null);
         this.setLikes(null);
         this.setCreationTime(new Date());
@@ -84,7 +102,7 @@ public class Article extends Entity<Article> implements Serializable {
     }
 
     public boolean securityCheck() {
-        return isAllNotNull(userId,title,intro,content);
+        return isAllNotNull(categoryId,userId,title,intro,content);
     }
 
     @Override

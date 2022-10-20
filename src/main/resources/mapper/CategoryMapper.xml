@@ -8,11 +8,35 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="nums" column="nums" jdbcType="INTEGER"/>
+            <result property="creationTime" column="creation_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="state" column="state" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,nums,
+        id,title,nums,creation_time,updateTime
         state
     </sql>
+
+    <select id="selectByTitle" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from category
+        where
+        title = #{title,jdbcType=VARCHAR}
+    </select>
+
+    <update id="autoIncrementNumsById">
+        update category
+         set nums = nums + 1
+        where
+        id = #{id,jdbcType=NUMERIC}
+    </update>
+
+    <update id="autoDecrementNumsById">
+    update category
+     set nums = nums - 1
+    where
+    id = #{id,jdbcType=NUMERIC} and nums > 0
+    </update>
 </mapper>

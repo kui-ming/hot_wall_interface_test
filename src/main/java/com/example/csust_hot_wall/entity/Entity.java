@@ -14,7 +14,7 @@ public abstract class Entity<T> implements Serializable {
 
     public abstract boolean securityCheck();
 
-    public boolean isAllNotNull(Object ...objects){
+    protected boolean isAllNotNull(Object ...objects){
         for (Object object : objects) {
             if (object == null) return false;
         }

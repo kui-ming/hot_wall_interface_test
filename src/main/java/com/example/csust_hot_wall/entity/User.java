@@ -24,7 +24,7 @@ public class User extends Entity<User> implements Serializable {
     /**
      * 开放ID
      */
-    private Integer openid;
+    private String openid;
 
     /**
      * 昵称

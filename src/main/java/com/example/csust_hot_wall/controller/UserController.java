@@ -18,4 +18,12 @@ public class UserController extends BaseController<User,UserService>{
 
     @Autowired
     UserService userService;
+
+    @PostMapping("/openid")
+    public Map infoByOpenid(@RequestBody Map<String,String> data){
+        String openid = data.get("openid");
+        User user = userService.getByOpenid(openid);
+        if (user==null) return Message.err(Message.Text.QUERY_ERR,"可能没有该数据。");
+        return Message.send(Message.Text.QUERY_SUCCESS,user);
+    }
 }

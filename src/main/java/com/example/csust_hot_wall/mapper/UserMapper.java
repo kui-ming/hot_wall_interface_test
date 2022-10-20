@@ -1,4 +1,6 @@
 package com.example.csust_hot_wall.mapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.csust_hot_wall.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserMapper extends MyBaseMapper<User> {
+
+    List<User> selectByOpenid(@Param("openid") String openid);
 
 }
 

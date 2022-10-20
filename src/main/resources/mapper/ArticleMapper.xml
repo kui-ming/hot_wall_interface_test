@@ -6,6 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.example.csust_hot_wall.entity.Article">
             <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="intro" column="intro" jdbcType="VARCHAR"/>
@@ -19,9 +20,46 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,user_id,title,
+        id,category_id,user_id,title,
         intro,content,creation_time,
         update_time,visitors,likes,
         picture_list,state
     </sql>
+    <!--简单字段列表缺少内容-->
+    <sql id="Simple_Column_List">
+        id,category_id,user_id,title,
+        intro,creation_time,
+        update_time,visitors,likes,
+        picture_list,state
+    </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Simple_Column_List"/>
+        from article
+        where
+        id = #{id,jdbcType=NUMERIC}
+    </select>
+
+    <select id="selectByCategoryId" resultMap="BaseResultMap">
+        select
+        <include refid="Simple_Column_List"/>
+        from article
+        where
+        category_id = #{categoryId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectByTitle" resultMap="BaseResultMap">
+        select
+        <include refid="Simple_Column_List"/>
+        from article
+        where
+        title = #{title,jdbcType=VARCHAR}
+    </select>
+    <select id="selectAllByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+    </select>
 </mapper>

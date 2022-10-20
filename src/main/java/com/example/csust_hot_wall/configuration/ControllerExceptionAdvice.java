@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+/**
+ * 全局控制器异常管理
+ */
 @RestControllerAdvice
 public class ControllerExceptionAdvice {
 
     @ExceptionHandler(value = Exception.class)
     public Map errHandler(Exception e){
-        return Message.err();
+        return Message.err(e.getMessage());
     }
 
     @ExceptionHandler(value = ResultException.class)
