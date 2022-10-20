@@ -1,5 +1,8 @@
 package com.example.csust_hot_wall.configuration;
 
+import lombok.Data;
+
+@Data
 public class ResultException extends RuntimeException {
     private Integer code;
     private String message;
