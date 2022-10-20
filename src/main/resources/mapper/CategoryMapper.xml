@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.csust_hot_wall.mapper.CategoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.csust_hot_wall.entity.Category">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="nums" column="nums" jdbcType="INTEGER"/>
+            <result property="state" column="state" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,nums,
+        state
+    </sql>
+</mapper>
