@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.csust_hot_wall.entity.Entity;
 import com.example.csust_hot_wall.mapper.MyBaseMapper;
 import com.example.csust_hot_wall.service.BaseService;
 import com.github.jeffreyning.mybatisplus.service.MppServiceImpl;
@@ -71,10 +72,15 @@ public class BaseServiceImpl<M extends MyBaseMapper<T>,T> extends MppServiceImpl
 
     static abstract class SearchKey<T>{
         String keyName;
+
+        protected SearchKey(String keyName){
+            this.keyName = keyName;
+        }
+
         public abstract LambdaQueryWrapper<T> search(String value);
     }
 
-    static class Searcher<T>{
+    static class Searcher<T extends Entity>{
         List<SearchKey> searchList = new ArrayList<>();
 
         public LambdaQueryWrapper<T> getWrapper(String key,String value){

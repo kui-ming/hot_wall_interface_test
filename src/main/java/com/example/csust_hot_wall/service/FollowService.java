@@ -6,6 +6,6 @@ import com.github.jeffreyning.mybatisplus.service.IMppService;
 /**
  *
  */
-public interface FollowService extends BaseService<Follow> {
+public interface FollowService extends IMppService<Follow> {
 
 }

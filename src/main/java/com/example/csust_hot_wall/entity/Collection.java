@@ -83,9 +83,14 @@ public class Collection extends Entity<Collection> implements Serializable {
         return sb.toString();
     }
 
-
+    @Override
+    public Collection stroke() {
+        setCreationTime(new Date());
+        setId(null);
+        return this;
+    }
 
     public boolean securityCheck() {
-        return false;
+        return isAllNotNull(userId,articleId);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @Entity com.example.csust_hot_wall.entity.Follow
  */
 @Repository
-public interface FollowMapper extends MyBaseMapper<Follow> {
+public interface FollowMapper extends MppBaseMapper<Follow> {
 
 }
 

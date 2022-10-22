@@ -56,6 +56,39 @@ public class Comments extends Entity<Comments> implements Serializable {
      */
     private String state;
 
+    // 所有评论信息增加评论用户名、文章名、文章作者、文章简介、回复用户名、回复评论信息
+    /**
+     * 评论作者
+     */
+    @TableField(exist = false)
+    private String author;
+    /**
+     * 文章名
+     */
+    @TableField(exist = false)
+    private String article;
+    /**
+     * 文章作者
+     */
+    @TableField(exist = false)
+    private String articleAuthor;
+    /**
+     * 文章简介
+     */
+    @TableField(exist = false)
+    private String articleIntro;
+    /**
+     * 回复用户名
+     */
+    @TableField(exist = false)
+    private String reply;
+    /**
+     * 回复评论内容
+     */
+    @TableField(exist = false)
+    private String replyContent;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -115,7 +148,15 @@ public class Comments extends Entity<Comments> implements Serializable {
         return sb.toString();
     }
 
+    @Override
+    public Comments stroke() {
+        setId(null);
+        setCreationTime(new Date());
+        setUpdateTime(new Date());
+        return this;
+    }
+
     public boolean securityCheck() {
-        return false;
+        return isAllNotNull(articleId,userId,content);
     }
 }

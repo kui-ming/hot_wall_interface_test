@@ -20,4 +20,25 @@
         user_id,content,creation_time,
         update_time,state
     </sql>
+    <select id="selectByArticleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comments
+        where
+        article_id = #{articleId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comments
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectByReplyId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comments
+        where
+        reply_id = #{replyId,jdbcType=NUMERIC}
+    </select>
 </mapper>

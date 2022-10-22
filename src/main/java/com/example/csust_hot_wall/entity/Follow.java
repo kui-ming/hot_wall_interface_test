@@ -81,7 +81,13 @@ public class Follow extends Entity<Follow> implements Serializable {
     }
 
     @Override
+    public Follow stroke() {
+        setCreationTime(new Date());
+        return this;
+    }
+
+    @Override
     public boolean securityCheck() {
-        return false;
+        return isAllNotNull(userId,followId);
     }
 }
