@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="comments")
 @Data
-public class Comments extends Entity<Comments> implements Serializable {
+public class Comments extends Entity implements Serializable {
     /**
      * 评论编号
      */

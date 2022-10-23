@@ -16,7 +16,7 @@ import lombok.Data;
  */
 @TableName(value ="follow")
 @Data
-public class Follow extends Entity<Follow> implements Serializable {
+public class Follow extends Entity implements Serializable {
     /**
      * 用户id
      */
@@ -38,6 +38,19 @@ public class Follow extends Entity<Follow> implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    // 增加关注者用户名、被关注者用户名
+    /**
+     * 关注者昵称
+     */
+    @TableField(exist = false)
+    private String user;
+
+    /**
+     * 被关注者昵称
+     */
+    @TableField(exist = false)
+    private String follow;
 
     @Override
     public boolean equals(Object that) {

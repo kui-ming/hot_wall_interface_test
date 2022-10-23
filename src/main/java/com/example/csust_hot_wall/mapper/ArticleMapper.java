@@ -20,6 +20,10 @@ public interface ArticleMapper extends MyBaseMapper<Article> {
     List<Article> selectByCategoryId(@Param("categoryId") Integer categoryId);
 
     List<Article> selectAllByUserId(@Param("userId") Integer userId);
+
+    int autoIncrementLikesById(@Param("id") Integer id);
+
+    int autoDecrementLikesById(@Param("id") Integer id);
 }
 
 

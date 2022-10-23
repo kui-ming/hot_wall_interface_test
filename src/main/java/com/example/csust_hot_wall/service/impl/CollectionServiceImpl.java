@@ -29,8 +29,6 @@ public class CollectionServiceImpl extends BaseServiceImpl<CollectionMapper, Col
     @Autowired
     ArticleMapper articleMapper;
 
-    // 查询器
-    private static Searcher<Collection> searcher;
 
     @Override
     public boolean save(Collection entity) {
@@ -62,44 +60,31 @@ public class CollectionServiceImpl extends BaseServiceImpl<CollectionMapper, Col
 
     /* 关键字查询 */
 
-    @Override
-    public LambdaQueryWrapper<Collection> searchToWrapper(String key, String value) {
-        if (searcher == null){
-            synchronized (CollectionServiceImpl.class){
-                if (searcher == null){
-                    searcher = new Searcher<>();
-                    searcher.add(new UserIdKey());
-                    searcher.add(new ArticleIdKey());
-                }
-            }
-        }
-        return searcher.getWrapper(key,value);
-    }
-
-    static class UserIdKey extends SearchKey<Collection>{
+    static private class UserIdKey extends SearchKey<Collection>{
         /**
          * 通过用户id查询
          */
         private UserIdKey(){super("uid");}
+
         @Override
-        public LambdaQueryWrapper<Collection> search(String value) {
+        public void search(LambdaQueryWrapper<Collection> wrapper, String value) {
             Integer uid = Integer.parseInt(value);
-            LambdaQueryWrapper<Collection> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Collection::getUserId,uid); // 通过用户id查询
             wrapper.orderByDesc(Collection::getCreationTime); // 时间倒序
-            return wrapper;
         }
     }
 
-    static class ArticleIdKey extends SearchKey<Collection>{
+    static private class ArticleIdKey extends SearchKey<Collection>{
+        /**
+         * 通过文章id查询
+         */
         private ArticleIdKey(){super("aid");}
+
         @Override
-        public LambdaQueryWrapper<Collection> search(String value) {
+        public void search(LambdaQueryWrapper<Collection> wrapper, String value) {
             Integer aid = Integer.parseInt(value);
-            LambdaQueryWrapper<Collection> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Collection::getArticleId,aid); // 通过文章id查询
             wrapper.orderByDesc(Collection::getCreationTime); // 时间倒序
-            return wrapper;
         }
     }
 }

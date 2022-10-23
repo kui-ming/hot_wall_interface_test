@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="likes")
 @Data
-public class Likes extends Entity<Likes> implements Serializable {
+public class Likes extends Entity implements Serializable {
     /**
      * 用户id
      */
@@ -37,6 +37,26 @@ public class Likes extends Entity<Likes> implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    // 点赞信息增加用户名、点赞文章名、文章作者名
+
+    /**
+     * 用户名
+     */
+    @TableField(exist = false)
+    private String user;
+
+    /**
+     * 文章名
+     */
+    @TableField(exist = false)
+    private String article;
+
+    /**
+     * 文章作者
+     */
+    @TableField(exist = false)
+    private String author;
 
     @Override
     public boolean equals(Object that) {
@@ -80,7 +100,13 @@ public class Likes extends Entity<Likes> implements Serializable {
     }
 
     @Override
+    public Entity stroke() {
+        setCreationTime(new Date());
+        return this;
+    }
+
+    @Override
     public boolean securityCheck() {
-        return false;
+        return isAllNotNull(userId,articleId);
     }
 }

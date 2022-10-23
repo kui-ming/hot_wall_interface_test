@@ -28,8 +28,6 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
     @Autowired
     ArticleMapper articleMapper;
 
-    //查询器
-    private Searcher<Comments> searcher;
 
     @Override
     public boolean save(Comments entity) {
@@ -111,64 +109,45 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
 
     /* 关键字查询*/
 
-    @Override
-    public LambdaQueryWrapper<Comments> searchToWrapper(String key, String value) {
-        if (searcher == null){
-            synchronized (CommentsServiceImpl.class){
-                if (searcher == null){
-                    searcher = new Searcher<>();
-                    searcher.add(new UserIdKey());
-                    searcher.add(new ArticleIdKey());
-                    searcher.add(new ReplyIdKey());
-
-                }
-            }
-        }
-        return searcher.getWrapper(key, value);
-    }
-
-    static class UserIdKey extends SearchKey<Comments>{
+    static private class UserIdKey extends SearchKey<Comments>{
         /**
          * 通过用户id查询
          */
         private UserIdKey(){super("uid");}
+
         @Override
-        public LambdaQueryWrapper<Comments> search(String value) {
+        public void search(LambdaQueryWrapper<Comments> wrapper, String value) {
             Integer uid = Integer.parseInt(value);
-            LambdaQueryWrapper<Comments> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Comments::getUserId,uid); // 通过用户id查询
             wrapper.orderByDesc(Comments::getCreationTime); // 时间倒序
-            return wrapper;
         }
     }
 
-    static class ArticleIdKey extends SearchKey<Comments>{
+    static private class ArticleIdKey extends SearchKey<Comments>{
         /**
          * 通过文章id查询
          */
         private ArticleIdKey(){super("aid");}
+
         @Override
-        public LambdaQueryWrapper<Comments> search(String value) {
+        public void search(LambdaQueryWrapper<Comments> wrapper, String value) {
             Integer aid = Integer.parseInt(value);
-            LambdaQueryWrapper<Comments> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Comments::getArticleId,aid); // 通过文章id查询
             wrapper.orderByDesc(Comments::getCreationTime); // 时间倒序
-            return wrapper;
         }
     }
 
-    static class ReplyIdKey extends SearchKey<Comments>{
+    static private class ReplyIdKey extends SearchKey<Comments>{
         /**
          * 通过回复id查询
          */
         private ReplyIdKey(){super("rid");}
+
         @Override
-        public LambdaQueryWrapper<Comments> search(String value) {
+        public void search(LambdaQueryWrapper<Comments> wrapper, String value) {
             Integer rid = Integer.parseInt(value);
-            LambdaQueryWrapper<Comments> wrapper = new LambdaQueryWrapper<>();
             wrapper.eq(Comments::getReplyId,rid); // 通过文章id查询
             wrapper.orderByDesc(Comments::getCreationTime); // 时间倒序
-            return wrapper;
         }
     }
 }

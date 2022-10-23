@@ -13,4 +13,30 @@
     <sql id="Base_Column_List">
         user_id,article_id,creation_time
     </sql>
+    <select id="selectByArticleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from likes
+        where
+        article_id = #{articleId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from likes
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+    </select>
+    <select id="countByUserId" resultType="int">
+select count(*)
+ from likes
+where
+user_id = #{userId,jdbcType=NUMERIC}
+</select>
+    <select id="countByArticleId" resultType="int">
+select count(*)
+ from likes
+where
+article_id = #{articleId,jdbcType=NUMERIC}
+</select>
 </mapper>

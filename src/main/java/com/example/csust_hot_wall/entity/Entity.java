@@ -2,10 +2,10 @@ package com.example.csust_hot_wall.entity;
 
 import java.io.Serializable;
 
-public abstract class Entity<T> implements Serializable {
+public abstract class Entity implements Serializable {
 
-    public T stroke(){
-        return (T) this;
+    public Entity stroke(){
+        return this;
     }
 
     public Integer getId(){

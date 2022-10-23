@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="collection")
 @Data
-public class Collection extends Entity<Collection> implements Serializable {
+public class Collection extends Entity implements Serializable {
     /**
      * 收藏编号
      */

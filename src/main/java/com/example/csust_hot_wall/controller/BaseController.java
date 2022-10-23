@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
-public abstract class BaseController<T extends Entity<T>,S extends BaseService<T>> {
+public abstract class BaseController<T extends Entity,S extends BaseService<T>> {
 
     @Autowired
     S service;
@@ -26,7 +26,7 @@ public abstract class BaseController<T extends Entity<T>,S extends BaseService<T
     @PostMapping("/add")
     public Map add(@RequestBody T t){
         if (! t.securityCheck()) return Message.err(Message.Code.ERR_ATTRIBUTE_MISS);
-        t = t.stroke();
+        t = (T) t.stroke();
         if (service.save(t)) {
             return Message.send(Message.Text.ADD_SUCCESS);
         }else {

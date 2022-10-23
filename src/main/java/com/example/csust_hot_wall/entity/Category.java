@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="category")
 @Data
-public class Category extends Entity<Category> implements Serializable {
+public class Category extends Entity implements Serializable {
     /**
      * 类别编号
      */

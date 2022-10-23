@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @TableName(value ="article")
 @Data
-public class Article extends Entity<Article> implements Serializable {
+public class Article extends Entity implements Serializable {
     /**
      * 文章编号
      */
