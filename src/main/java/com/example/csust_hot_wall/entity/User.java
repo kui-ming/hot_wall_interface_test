@@ -54,6 +54,44 @@ public class User extends Entity implements Serializable {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
+    /* 冗余字段 */
+
+    /**
+     * 文章数
+     */
+    @TableField(exist = false)
+    private Integer articleCount;
+
+    /**
+     * 收藏数
+     */
+    @TableField(exist = false)
+    private Integer collectionCount;
+
+    /**
+     * 关注数
+     */
+    @TableField(exist = false)
+    private Integer followCount;
+
+    /**
+     * 粉丝数
+     */
+    @TableField(exist = false)
+    private Integer fansCount;
+
+    /**
+     * 点赞数
+     */
+    @TableField(exist = false)
+    private Integer likesCount;
+
+    /**
+     * 评论数
+     */
+    @TableField(exist = false)
+    private Integer commentsCount;
+
     /**
      * 返回一个新的对象，用于限制字段规则
      * @return

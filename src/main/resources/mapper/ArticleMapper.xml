@@ -74,4 +74,16 @@
         where
         id = #{id,jdbcType=NUMERIC}
     </update>
+    <select id="countByUserId" resultType="int">
+select count(*)
+ from article
+where
+user_id = #{userId,jdbcType=NUMERIC}
+</select>
+    <select id="countByCategoryId" resultType="int">
+select count(*)
+ from article
+where
+category_id = #{categoryId,jdbcType=NUMERIC}
+</select>
 </mapper>

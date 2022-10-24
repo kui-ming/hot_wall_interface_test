@@ -6,6 +6,7 @@ import com.example.csust_hot_wall.entity.Article;
 import com.example.csust_hot_wall.entity.Category;
 import com.example.csust_hot_wall.entity.User;
 import com.example.csust_hot_wall.mapper.CategoryMapper;
+import com.example.csust_hot_wall.mapper.CollectionMapper;
 import com.example.csust_hot_wall.mapper.UserMapper;
 import com.example.csust_hot_wall.service.ArticleService;
 import com.example.csust_hot_wall.mapper.ArticleMapper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,6 +30,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
     UserMapper userMapper;
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    CollectionMapper collectionMapper;
 
     public boolean save(Article entity) {
         // 判断文章标题是否重复
@@ -46,6 +50,12 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean updateById(Article entity) {
+        entity.setUpdateTime(new Date());
+        return super.updateById(entity);
     }
 
     @Override
@@ -69,7 +79,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
      */
     @Override
     protected Article redundancy(Article article) {
-        // 所有查询增加作者昵称、类别名
+        // 所有查询增加作者昵称、类别名、被收藏数
         // 作者
         User user = userMapper.selectById(article.getUserId());
         if (user == null) article.setAuthor("未知作者");
@@ -78,7 +88,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
         Category category = categoryMapper.selectById(article.getCategoryId());
         if (category == null) article.setCategory("未知类别");
         else article.setCategory(category.getTitle());
-
+        // 被收藏数
+        article.setCollectionCount(collectionMapper.countByArticleId(article.getId()));
         return article;
     }
 }

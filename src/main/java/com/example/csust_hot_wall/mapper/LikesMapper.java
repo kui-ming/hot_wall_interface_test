@@ -40,6 +40,8 @@ public interface LikesMapper extends MyBaseMapper<Likes> {
      * @return
      */
     int countByArticleId(@Param("articleId") Integer articleId);
+
+    int deleteByUserId(@Param("userId") Integer userId);
 }
 
 

@@ -21,9 +21,25 @@ public interface ArticleMapper extends MyBaseMapper<Article> {
 
     List<Article> selectAllByUserId(@Param("userId") Integer userId);
 
+    /**
+     * 查询属于指定用户的文章数
+     * @param userId
+     * @return
+     */
+    int countByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询指定类别的文章数
+     * @param categoryId
+     * @return
+     */
+    int countByCategoryId(@Param("categoryId") Integer categoryId);
+
     int autoIncrementLikesById(@Param("id") Integer id);
 
     int autoDecrementLikesById(@Param("id") Integer id);
+
+
 }
 
 

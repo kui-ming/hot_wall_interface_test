@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +47,8 @@ public class CategoryServiceImpl extends BaseServiceImpl<CategoryMapper, Categor
         // 普通修改无法修改创建日期和文章数
         entity.setCreationTime(null);
         entity.setNums(null);
+        // 设置更新时间
+        entity.setUpdateTime(new Date());
         return super.updateById(entity);
     }
 

@@ -17,6 +17,20 @@ public interface CollectionMapper extends MyBaseMapper<Collection> {
     List<Collection> selectByUserId(@Param("userId") Integer userId);
 
     List<Collection> selectByArticleId(@Param("articleId") Integer articleId);
+
+    /**
+     * 查询指定用户的收藏数
+     * @param userId
+     * @return
+     */
+    int countByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询指定文章的被收藏数
+     * @param articleId
+     * @return
+     */
+    int countByArticleId(@Param("articleId") Integer articleId);
 }
 
 

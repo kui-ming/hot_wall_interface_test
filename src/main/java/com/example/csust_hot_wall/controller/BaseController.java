@@ -2,11 +2,9 @@ package com.example.csust_hot_wall.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.csust_hot_wall.entity.Article;
 import com.example.csust_hot_wall.entity.Entity;
 import com.example.csust_hot_wall.service.BaseService;
 import com.example.csust_hot_wall.tools.Message;
-import com.example.csust_hot_wall.tools.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

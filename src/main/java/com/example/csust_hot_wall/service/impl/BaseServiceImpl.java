@@ -141,16 +141,15 @@ public class BaseServiceImpl<M extends MyBaseMapper<T>,T extends Entity> extends
         List<SearchKey<T>> searchList = new ArrayList<>();
 
         public LambdaQueryWrapper<T> getWrapper(String key,String value){
-            LambdaQueryWrapper<T> wrapper = new LambdaQueryWrapper<>();
-            if ("".equals(key)) return wrapper;
             for (SearchKey<T> searchKey : searchList) {
                 if (searchKey.keyName.equals(key)){
-                    wrapper = new LambdaQueryWrapper<>();
-                   searchKey.search(wrapper,value);
+                    LambdaQueryWrapper<T> wrapper = new LambdaQueryWrapper<>();
+                    searchKey.search(wrapper,value);
                     return wrapper;
                 }
             }
-            return wrapper;
+            throw new ResultException("关键字查询失败！");
+            // return wrapper;
         }
 
         public void add(SearchKey<T> searchKey){

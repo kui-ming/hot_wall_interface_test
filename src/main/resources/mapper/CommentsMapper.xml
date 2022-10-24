@@ -41,4 +41,10 @@
         where
         reply_id = #{replyId,jdbcType=NUMERIC}
     </select>
+    <select id="countByUserId" resultType="int">
+select count(*)
+ from comments
+where
+user_id = #{userId,jdbcType=NUMERIC}
+</select>
 </mapper>

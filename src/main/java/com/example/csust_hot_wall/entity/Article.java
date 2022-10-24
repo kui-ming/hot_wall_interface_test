@@ -27,21 +27,9 @@ public class Article extends Entity implements Serializable {
     private Integer categoryId;
 
     /**
-     * 类别名
-     */
-    @TableField(exist = false)
-    private String category;
-
-    /**
      * 用户id
      */
     private Integer userId;
-
-    /**
-     * 用户名
-     */
-    @TableField(exist = false)
-    private String author;
 
     /**
      * 标题
@@ -90,6 +78,27 @@ public class Article extends Entity implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    /* 冗余字段 */
+    /**
+     * 类别名
+     */
+    @TableField(exist = false)
+    private String category;
+
+    /**
+     * 用户名
+     */
+    @TableField(exist = false)
+    private String author;
+
+    /**
+     * 被收藏数
+     * @return
+     */
+    @TableField(exist = false)
+    private Integer collectionCount;
+
 
     public Article stroke(){
         setId(null);
