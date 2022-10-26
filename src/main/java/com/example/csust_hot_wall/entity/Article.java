@@ -99,6 +99,13 @@ public class Article extends Entity implements Serializable {
     @TableField(exist = false)
     private Integer collectionCount;
 
+    /**
+     * 评论总数
+     * @return
+     */
+    @TableField(exist = false)
+    private Integer commentsCount;
+
 
     public Article stroke(){
         setId(null);

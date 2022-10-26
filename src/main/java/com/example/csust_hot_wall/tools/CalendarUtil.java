@@ -1,6 +1,8 @@
 package com.example.csust_hot_wall.tools;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class CalendarUtil {
 
@@ -106,6 +108,23 @@ public class CalendarUtil {
     public static Calendar initCalendar(int year,int month,int day,int hour,int minute){
         Calendar calendar = Calendar.getInstance();
         calendar.set(year,month,day,hour,minute);
+        return calendar;
+    }
+
+    /**
+     * 通过Date类得到一个日历类
+     * @param date
+     * @return
+     */
+    public static Calendar initCalendar(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
+    public static Calendar forward(int day){
+        Calendar calendar = Calendar.getInstance();// 获取当前日历
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) - day); // 减去指定天数
         return calendar;
     }
 

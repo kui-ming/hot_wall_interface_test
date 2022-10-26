@@ -33,12 +33,21 @@ public interface CommentsMapper extends MyBaseMapper<Comments> {
      */
     List<Comments> selectByReplyId(@Param("replyId") Integer replyId);
 
+    Comments selectOneByArticleIdOrderByCreationTime(@Param("articleId") Integer articleId);
+
     /**
      * 查询指定用户的评论与回复数
      * @param userId
      * @return
      */
     int countByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询指定文章的评论与回复数
+     * @param articleId
+     * @return
+     */
+    int countByArticleId(@Param("articleId") Integer articleId);
 }
 
 

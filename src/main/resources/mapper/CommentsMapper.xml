@@ -47,4 +47,19 @@ select count(*)
 where
 user_id = #{userId,jdbcType=NUMERIC}
 </select>
+    <select id="countByArticleId" resultType="int">
+select count(*)
+ from comments
+where
+article_id = #{articleId,jdbcType=NUMERIC}
+</select>
+    <select id="selectOneByArticleIdOrderByCreationTime" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comments
+        where
+        article_id = #{articleId,jdbcType=NUMERIC}
+        order by creation_time desc
+        limit 1
+    </select>
 </mapper>

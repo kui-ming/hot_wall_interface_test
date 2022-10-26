@@ -5,11 +5,8 @@ import com.example.csust_hot_wall.configuration.ResultException;
 import com.example.csust_hot_wall.entity.Article;
 import com.example.csust_hot_wall.entity.Category;
 import com.example.csust_hot_wall.entity.User;
-import com.example.csust_hot_wall.mapper.CategoryMapper;
-import com.example.csust_hot_wall.mapper.CollectionMapper;
-import com.example.csust_hot_wall.mapper.UserMapper;
+import com.example.csust_hot_wall.mapper.*;
 import com.example.csust_hot_wall.service.ArticleService;
-import com.example.csust_hot_wall.mapper.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
     CategoryMapper categoryMapper;
     @Autowired
     CollectionMapper collectionMapper;
+    @Autowired
+    CommentsMapper commentsMapper;
 
     public boolean save(Article entity) {
         // 判断文章标题是否重复
@@ -90,6 +89,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
         else article.setCategory(category.getTitle());
         // 被收藏数
         article.setCollectionCount(collectionMapper.countByArticleId(article.getId()));
+        // 评论数
+        article.setCommentsCount(commentsMapper.countByArticleId(article.getId()));
         return article;
     }
 }
