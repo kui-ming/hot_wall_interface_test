@@ -108,6 +108,7 @@ public class BaseServiceImpl<M extends MyBaseMapper<T>,T extends Entity> extends
                                 e.printStackTrace();
                                 throw new ResultException("此类关键字查询模块实例化调用时异常！");
                             }
+                            object.setBoss(this);
                             searcher.add(object);
                         }
                     }
@@ -124,13 +125,23 @@ public class BaseServiceImpl<M extends MyBaseMapper<T>,T extends Entity> extends
      */
     static abstract class SearchKey<T>{
 
-        String keyName;
+        protected String keyName;
+
+        protected BaseServiceImpl boss;
 
         protected SearchKey(String keyName){
             this.keyName = keyName;
         }
 
         public abstract void search(LambdaQueryWrapper<T> wrapper, String value);
+
+        protected void setBoss(BaseServiceImpl boss){
+            this.boss = boss;
+        }
+
+        protected BaseServiceImpl getBoss(){
+            return this.boss;
+        }
     }
 
     /**
@@ -148,6 +159,7 @@ public class BaseServiceImpl<M extends MyBaseMapper<T>,T extends Entity> extends
                     return wrapper;
                 }
             }
+            if ("".equals(key)) return new LambdaQueryWrapper<T>();
             throw new ResultException("关键字查询失败！");
             // return wrapper;
         }

@@ -26,4 +26,11 @@
         where
         openid = #{openid,jdbcType=VARCHAR}
     </select>
+    <select id="selectByNickname" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where
+        nickname = #{nickname,jdbcType=VARCHAR}
+    </select>
 </mapper>

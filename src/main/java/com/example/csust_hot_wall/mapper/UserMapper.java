@@ -14,6 +14,13 @@ public interface UserMapper extends MyBaseMapper<User> {
 
     List<User> selectByOpenid(@Param("openid") String openid);
 
+    /**
+     * 通过昵称查询用户列表
+     * @param nickname
+     * @return
+     */
+    List<User> selectByNickname(@Param("nickname") String nickname);
+
 }
 
 

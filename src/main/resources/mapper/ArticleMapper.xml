@@ -21,36 +21,37 @@
 
     <sql id="Base_Column_List">
         id,category_id,user_id,title,
-        intro,content,creation_time,
+        intro,creation_time,
         update_time,visitors,likes,
         picture_list,state
     </sql>
     <!--简单字段列表缺少内容-->
-    <sql id="Simple_Column_List">
+    <sql id="Column_List_Content">
         id,category_id,user_id,title,
-        intro,creation_time,
+        intro,content,creation_time,
+        update_time,visitors,likes,
+        picture_list,state
         update_time,visitors,likes,
         picture_list,state
     </sql>
 
     <select id="selectById" resultMap="BaseResultMap">
         select
-        <include refid="Simple_Column_List"/>
+        <include refid="Base_Column_List"/>
         from article
         where
         id = #{id,jdbcType=NUMERIC}
     </select>
-
     <select id="selectByCategoryId" resultMap="BaseResultMap">
         select
-        <include refid="Simple_Column_List"/>
+        <include refid="Base_Column_List"/>
         from article
         where
         category_id = #{categoryId,jdbcType=NUMERIC}
     </select>
     <select id="selectByTitle" resultMap="BaseResultMap">
         select
-        <include refid="Simple_Column_List"/>
+        <include refid="Base_Column_List"/>
         from article
         where
         title = #{title,jdbcType=VARCHAR}
@@ -86,4 +87,17 @@ select count(*)
 where
 category_id = #{categoryId,jdbcType=NUMERIC}
 </select>
+    <select id="selectDetailsById" resultMap="BaseResultMap">
+        select
+        <include refid="Column_List_Content"/>
+        from article
+        where
+        id = #{id,jdbcType=NUMERIC}
+    </select>
+    <update id="autoIncrementVisitorsById">
+update article
+ set visitors = visitors+1
+where
+id = #{id,jdbcType=NUMERIC}
+</update>
 </mapper>

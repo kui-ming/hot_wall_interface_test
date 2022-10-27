@@ -15,6 +15,8 @@ public interface ArticleMapper extends MyBaseMapper<Article> {
 
     Article selectById(Serializable id);
 
+    Article selectDetailsById(@Param("id") Integer id);
+
     List<Article> selectByTitle(@Param("title") String title);
 
     List<Article> selectByCategoryId(@Param("categoryId") Integer categoryId);
@@ -39,6 +41,7 @@ public interface ArticleMapper extends MyBaseMapper<Article> {
 
     int autoDecrementLikesById(@Param("id") Integer id);
 
+    int autoIncrementVisitorsById(@Param("id") Integer id);
 
 }
 

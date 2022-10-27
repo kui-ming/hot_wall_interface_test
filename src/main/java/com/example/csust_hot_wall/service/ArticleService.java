@@ -7,5 +7,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  *
  */
 public interface ArticleService extends BaseService<Article> {
-
+    public Article getDetailsById(Integer id);
 }

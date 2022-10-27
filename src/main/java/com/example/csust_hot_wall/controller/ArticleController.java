@@ -18,17 +18,16 @@ public class ArticleController extends  BaseController<Article,ArticleService>{
 
     @Autowired
     ArticleService articleService;
-/*
-    @PostMapping("/add")
-    public Map add(@RequestBody Article article){
-        if (Utils.PropertyIsEmpty(article,"userId")) return Message.err(Message.Code.ERR_ATTRIBUTE_MISS);
-        article = article.stroke();
-        if (articleService.save(article)) {
-            return Message.send(Message.Text.ADD_SUCCESS);
-        }else {
-            return Message.err(Message.Text.ADD_ERR);
-        }
+
+    /**
+     * 通过ID获取文章详情
+     * @param id
+     * @return
+     */
+    @GetMapping("/details")
+    public Map getDetailsById(@RequestParam("id") Integer id){
+        Article article = articleService.getDetailsById(id);
+        return Message.send(Message.Text.QUERY_SUCCESS,article);
     }
- */
 
 }
