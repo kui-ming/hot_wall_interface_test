@@ -155,6 +155,8 @@
                     <include>application.properties</include>
                     <include>**/*.xml</include>
                 </includes>
+                <!--过滤一定要开啊-->
+                <filtering>true</filtering>
             </resource>
         </resources>
     </build>

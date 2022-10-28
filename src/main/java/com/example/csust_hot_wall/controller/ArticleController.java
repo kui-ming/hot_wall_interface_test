@@ -14,6 +14,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/article")
+@CrossOrigin
 public class ArticleController extends  BaseController<Article,ArticleService>{
 
     @Autowired

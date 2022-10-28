@@ -1,4 +1,10 @@
+# 线上部署
+使用端口：8800
+数据库名：hot_wall
+JAR包名： csust_hot_wall-0.0.1-SNAPSHOT.jar
+项目地址：/www/wwwroot/springboot/hot_wall
 # 工程简介
+这是一个与浩总开发的关于文章与视频的项目，这里作为后端接口存在，还没有写管理系统嘞
 # 长沙理工热点墙后台接口
 
 表
