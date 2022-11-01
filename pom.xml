@@ -104,6 +104,10 @@
             <version>0.11.2</version>
         </dependency>
         <!-- JWT结束 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
