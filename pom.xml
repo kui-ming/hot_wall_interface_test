@@ -158,8 +158,9 @@
                     <include>application-${profileActive}.properties</include>
                     <include>application.properties</include>
                     <include>**/*.xml</include>
+                    <include>**/*.yml</include>
                 </includes>
-                <!--过滤一定要开啊-->
+                <!--过滤一定要开-->
                 <filtering>true</filtering>
             </resource>
         </resources>
