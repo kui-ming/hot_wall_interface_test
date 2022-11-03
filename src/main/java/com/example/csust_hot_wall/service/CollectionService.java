@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CollectionService extends BaseService<Collection> {
 
+    boolean removeByUserIdAndArticleId(Integer uid,Integer aid);
+
     List<Collection> listByUserId(Integer userId);
 
     List<Collection> listByArticleId(Integer articleId);

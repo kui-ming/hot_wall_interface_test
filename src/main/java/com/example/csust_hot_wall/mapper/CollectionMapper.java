@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CollectionMapper extends MyBaseMapper<Collection> {
 
+    int deleteByUserIdAndArticleId(@Param("userId") Integer userId, @Param("articleId") Integer articleId);
+
     List<Collection> selectByUserIdAndArticleId(@Param("userId") Integer userId, @Param("articleId") Integer articleId);
 
     List<Collection> selectByUserId(@Param("userId") Integer userId);

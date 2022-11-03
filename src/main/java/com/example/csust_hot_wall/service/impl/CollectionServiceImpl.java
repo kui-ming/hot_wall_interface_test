@@ -45,6 +45,11 @@ public class CollectionServiceImpl extends BaseServiceImpl<CollectionMapper, Col
     }
 
     @Override
+    public boolean removeByUserIdAndArticleId(Integer uid, Integer aid) {
+        return collectionMapper.deleteByUserIdAndArticleId(uid, aid) > 0;
+    }
+
+    @Override
     public List<Collection> listByUserId(Integer userId) {
         List<Collection> collectionList = collectionMapper.selectByUserId(userId);
         redundancy(collectionList); // 增加冗余字段

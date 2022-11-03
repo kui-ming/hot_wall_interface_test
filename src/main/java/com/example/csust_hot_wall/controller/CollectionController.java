@@ -3,6 +3,7 @@ package com.example.csust_hot_wall.controller;
 import com.example.csust_hot_wall.entity.Collection;
 import com.example.csust_hot_wall.service.CollectionService;
 import com.example.csust_hot_wall.tools.Message;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,6 +51,25 @@ public class CollectionController extends BaseController<Collection, CollectionS
     public Map alter(Collection collection) {
         return Message.err("无法修改收藏！");
     }
+
+
+    /* 用户专用 */
+
+    /**
+     * 通过文章id删除用户的收藏
+     * @param articleId
+     * @return
+     */
+    @DeleteMapping("/cancel")
+    public Map cancelCollectionByArticleId(@RequestParam("aid") Integer articleId){
+        if (getRequest().getUserId() == null) return Message.err();
+        if (collectionService.removeByUserIdAndArticleId(getRequest().getUserId(),articleId)) {
+            return Message.send(Message.Text.REMOVE_SUCCESS);
+        }
+        return Message.err(Message.Text.REMOVE_ERR);
+    }
+
+    /* 查询类 */
 
     /**
      * 根据用户编号查询
