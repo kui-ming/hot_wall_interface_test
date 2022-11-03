@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin
 public abstract class BaseController<T extends Entity,S extends BaseService<T>> {
@@ -45,8 +44,14 @@ public abstract class BaseController<T extends Entity,S extends BaseService<T>> 
     @DeleteMapping("/del")
     public Map delete(@RequestBody Map<String,Integer[]> map){
         Integer[] ids = map.getOrDefault("ids",new Integer[]{});
-        Integer id = ids[0];
-        if (service.removeById(id)) {
+        boolean isOk = false;
+        if (ids.length > 1){
+            isOk = service.removeByIds(Arrays.asList(ids));
+        }else {
+            Integer id = ids[0];
+            isOk = service.removeById(id);
+        }
+        if (isOk) {
             return Message.send(Message.Text.REMOVE_SUCCESS);
         }else {
             return Message.err(Message.Text.REMOVE_ERR);
@@ -86,6 +91,33 @@ public abstract class BaseController<T extends Entity,S extends BaseService<T>> 
             List<T> list = service.list(queryWrapper);
             return Message.send(Message.Text.QUERY_SUCCESS,list);
         }
+    }
+
+    protected RequestHandle getRequest(){
+        if (RequestHandle.request == null) {
+            RequestHandle.request = request;
+        }
+        return RequestHandle.instance;
+    }
+
+    static class RequestHandle{
+
+        private static HttpServletRequest request = null;
+
+        private static RequestHandle instance = new RequestHandle();
+
+        public Integer getUserId(){
+            return (Integer) request.getAttribute("user_id");
+        }
+
+        public String getPower(){
+            return (String) request.getAttribute("power");
+        }
+
+        public String getOpenId(){
+            return (String) request.getAttribute("open_id");
+        }
+
     }
 
 }

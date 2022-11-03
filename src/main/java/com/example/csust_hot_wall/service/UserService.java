@@ -8,4 +8,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserService extends BaseService<User> {
     User getByOpenid(String openid);
+
+    User login(String openid);
 }

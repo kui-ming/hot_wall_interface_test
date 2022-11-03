@@ -198,7 +198,8 @@ public class Message {
     }
 
     public enum Text{
-        EXISTED_ERR("数据已存在！"),
+        NO_POWER_ERR("无权限操作！"),
+        EXISTS_ERR("数据已经存在！"),
         NO_EXISTED_ERR("数据不存在！"),
         PARSE_ERR("数据解析失败！"),
         QUERY_ERR("数据查询失败！"),
@@ -212,7 +213,6 @@ public class Message {
         REMOVE_SUCCESS("数据删除成功！"),
         ALTER_SUCCESS("数据修改成功！"),
         QUERY_SUCCESS("数据查询成功！"),
-        DATA_EXISTS("数据已经存在！");
         ;
 
         private String txt;

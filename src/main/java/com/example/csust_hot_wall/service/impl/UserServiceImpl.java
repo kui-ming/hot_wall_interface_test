@@ -5,11 +5,15 @@ import com.example.csust_hot_wall.configuration.ResultException;
 import com.example.csust_hot_wall.entity.*;
 import com.example.csust_hot_wall.mapper.*;
 import com.example.csust_hot_wall.service.UserService;
+import com.example.csust_hot_wall.tools.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -79,6 +83,26 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User>
             return redundancy(userList.get(0));
         }
         return null;
+    }
+
+    @Override
+    public User login(String openid) {
+        // 如果已存在openid则不变
+        List<User> userList = userMapper.selectByOpenid(openid);
+        User user = null;
+        if (userList.size() < 1){
+            // 如果不存在openid则增加
+            user = new User();
+            user.setOpenid(openid);
+            user.setNickname("微信用户");
+            user.setCreationTime(new Date());
+            user.setUpdateTime(new Date());
+            if (userMapper.insert(user) < 1) {
+                throw new ResultException("登录时增加用户失败！");
+            }
+        }
+        else user = userList.get(0);
+        return user;
     }
 
     @Override
