@@ -69,6 +69,15 @@ public class CollectionController extends BaseController<Collection, CollectionS
         return Message.err(Message.Text.REMOVE_ERR);
     }
 
+    @GetMapping("article")
+    public Map isCollectArticle(@RequestParam("aid") Integer articleId){
+        if (getRequest().getUserId() == null) return Message.err();
+        if (collectionService.isCollect(getRequest().getUserId(),articleId)){
+            return Message.send("已收藏");
+        }
+        return Message.err("未收藏");
+    }
+
     /* 查询类 */
 
     /**

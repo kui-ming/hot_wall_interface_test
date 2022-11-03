@@ -50,6 +50,11 @@ public class CollectionServiceImpl extends BaseServiceImpl<CollectionMapper, Col
     }
 
     @Override
+    public boolean isCollect(Integer uid, Integer aid) {
+        return collectionMapper.selectByUserIdAndArticleId(uid, aid).size() > 0;
+    }
+
+    @Override
     public List<Collection> listByUserId(Integer userId) {
         List<Collection> collectionList = collectionMapper.selectByUserId(userId);
         redundancy(collectionList); // 增加冗余字段
