@@ -52,7 +52,10 @@ public class UserController extends BaseController<User,UserService>{
         if (code == null) return Message.err(Message.Text.QUERY_ERR,"code不存在！");
         // 通过code从微信拿取openid
         JSONObject res = openIdManage.getOpenId(code);
-        if (res.getInteger("errcode") != 0) return Message.err(res.getString("errmsg"));
+        System.out.println(res.toString());
+        // 狗日的微信文档，在请求成功后没有errcode返回
+        if (res.getInteger("errcode") != null && res.getInteger("errcode") != 0)
+            return Message.err(res.getString("errmsg"));
         User user = userService.login(res.getString("openid"));
         if (user == null) return Message.err(Message.Text.LOGIN_ERR);
         Map<String, Object> map = new HashMap<>();
