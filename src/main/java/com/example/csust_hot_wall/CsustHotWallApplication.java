@@ -1,5 +1,6 @@
 package com.example.csust_hot_wall;
 
+import com.example.csust_hot_wall.tools.JwtUtils;
 import com.github.jeffreyning.mybatisplus.conf.EnableMPP;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +15,7 @@ public class CsustHotWallApplication {
 
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+        JwtUtils.createJWT();
         SpringApplication.run(CsustHotWallApplication.class, args);
     }
 

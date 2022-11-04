@@ -15,7 +15,6 @@ public class OpenIdManage {
     WXKey wxKey;
 
     public JSONObject getOpenId(String code){
-        System.out.println(wxKey);
         String url = "https://api.weixin.qq.com/sns/jscode2session?appid="
                 + wxKey.getId() +
                 "&secret="
@@ -29,7 +28,6 @@ public class OpenIdManage {
                 .retrieve()
                 .bodyToMono(String.class);
         String result = mono.block();
-        System.out.println();
         return JSONObject.parseObject(result);
     }
 }
