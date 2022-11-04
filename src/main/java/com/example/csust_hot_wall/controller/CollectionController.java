@@ -86,7 +86,7 @@ public class CollectionController extends BaseController<Collection, CollectionS
      * @return
      */
     @GetMapping("/query/uid")
-    public Map queryByUserId(@RequestParam(required = false) Integer id){
+    public Map queryByUserId(@RequestParam(value = "id", required = false) Integer id){
         Integer userId = getRequest().getUserId();
         String power = getRequest().getPower();
         // 当角色为用户时，自动填充用户id

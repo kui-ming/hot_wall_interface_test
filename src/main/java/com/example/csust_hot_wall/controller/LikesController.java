@@ -18,6 +18,16 @@ public class LikesController extends BaseController<Likes, LikesService>{
     @Autowired
     LikesService likesService;
 
+    @PostMapping("/add")
+    public Map add(@RequestBody Likes t){
+        // 普通用户无需设置user_id
+        if ("user".equals(getRequest().getPower())){
+            if (getRequest().getUserId() == null) return Message.err(Message.Text.NO_POWER_ERR);
+            t.setUserId(getRequest().getUserId());
+        }
+        return super.add(t);
+    }
+
     @DeleteMapping("/del")
     public Map delete(@RequestBody Map<String,Integer[]> map){
        return Message.err("无效接口！");
@@ -25,6 +35,11 @@ public class LikesController extends BaseController<Likes, LikesService>{
 
     @DeleteMapping("/del_follow")
     public Map delete(@RequestBody Likes likes){
+        // 普通用户无需设置user_id
+        if ("user".equals(getRequest().getPower())){
+            if (getRequest().getUserId() == null) return Message.err(Message.Text.NO_POWER_ERR);
+            likes.setUserId(getRequest().getUserId());
+        }
         // 关键属性检查，为假返回属性缺失信息
         if (!likes.securityCheck()) return Message.err(Message.Code.ERR_ATTRIBUTE_MISS);
         // 通过联合主键删除条目
@@ -41,7 +56,11 @@ public class LikesController extends BaseController<Likes, LikesService>{
      * @return
      */
     @GetMapping("/query/uid")
-    public Map queryByUserId(@RequestParam("id") Integer uid){
+    public Map queryByUserId(@RequestParam(value = "id", required = false) Integer uid){
+        // 登录用户可直接查询自己的点赞的文章列表
+        if ("user".equals(getRequest().getPower())){
+            if (uid == null && getRequest().getUserId() != null) uid = getRequest().getUserId();
+        }
         return Message.send(Message.Text.QUERY_SUCCESS,likesService.listByUserId(uid));
     }
 
@@ -61,7 +80,11 @@ public class LikesController extends BaseController<Likes, LikesService>{
      * @return
      */
     @GetMapping("/count/uid")
-    public Map countByUserId(@RequestParam("id") Integer uid){
+    public Map countByUserId(@RequestParam(value = "id", required = false) Integer uid){
+        // 登录用户可直接查询自己的点赞的文章总数
+        if ("user".equals(getRequest().getPower())){
+            if (uid == null && getRequest().getUserId() != null) uid = getRequest().getUserId();
+        }
         return Message.send(Message.Text.QUERY_SUCCESS,likesService.countByUserId(uid));
     }
 

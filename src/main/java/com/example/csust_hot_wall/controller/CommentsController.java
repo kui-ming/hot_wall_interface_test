@@ -1,14 +1,16 @@
 package com.example.csust_hot_wall.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.csust_hot_wall.entity.Collection;
 import com.example.csust_hot_wall.entity.Comments;
 import com.example.csust_hot_wall.service.CommentsService;
 import com.example.csust_hot_wall.tools.Message;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +22,60 @@ public class CommentsController extends BaseController<Comments, CommentsService
 
     @Autowired
     CommentsService commentsService;
+
+    @PostMapping("/add")
+    public Map add(@RequestBody Comments t){
+        // 普通用户无需传入user_id
+        if ("user".equals(getRequest().getPower())){
+            if (getRequest().getUserId() == null) return Message.err();
+            t.setUserId(getRequest().getUserId());
+        }
+        return super.add(t);
+    }
+
+    @PutMapping("/update")
+    public Map alter(@RequestBody Comments t){
+        // 只有评论者才能修改
+        if (t.getId() == null) return Message.err(Message.Code.ERR_ATTRIBUTE_MISS);
+        Comments comments = commentsService.getById(t.getId());
+        if (comments == null) return Message.err(Message.Text.ALTER_ERR);
+        if (!comments.getUserId().equals(getRequest().getUserId())) return Message.err(Message.Text.NO_POWER_ERR);
+        return super.alter(t);
+    }
+
+    @DeleteMapping("/del")
+    public Map delete(@RequestBody Map<String,Integer[]> map){
+        Integer[] ids = map.getOrDefault("ids",new Integer[]{});
+        // 登录用户只能删除自己的收藏
+        if ("user".equals(getRequest().getPower())){
+            if (getRequest().getUserId() == null) return Message.err();
+            List<Comments> commentsList = commentsService.listByIds(Arrays.asList(ids));
+            for (Comments comments : commentsList) {
+                // 出现非登录用户的收藏则报错
+                if (!comments.getUserId().equals(getRequest().getUserId())) return Message.err(Message.Text.NO_POWER_ERR);
+            }
+        }
+        return super.delete(map);
+    }
+
+    /**
+     * 普通用户查询自己的评论（可分页和关键字查询）
+     * @param page
+     * @param size
+     * @param key
+     * @param value
+     * @return
+     */
+    @GetMapping("/list")
+    public Map queryMyself(@RequestParam(value = "page", required = false) Integer page,
+                           @RequestParam(value = "size", required = false) Integer size,
+                           @RequestParam(value = "k", defaultValue = "") String key,
+                           @RequestParam(value = "v", defaultValue = "") String value){
+        if (getRequest().getUserId() == null) return Message.err(Message.Text.NO_POWER_ERR);
+        LambdaQueryWrapper<Comments> queryWrapper = commentsService.searchToWrapper(key, value);
+        queryWrapper.eq(Comments::getUserId,getRequest().getUserId());
+        return page(page,size,queryWrapper);
+    }
 
     @GetMapping("/query/aid")
      public Map queryByArticleId(@RequestParam("id") Integer articleId){

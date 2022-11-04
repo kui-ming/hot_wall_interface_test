@@ -68,11 +68,15 @@ public abstract class BaseController<T extends Entity,S extends BaseService<T>> 
 
 
     @GetMapping("query")
-    public Map page(@RequestParam(value = "page", defaultValue = "") Integer page,
-                    @RequestParam(value = "size", defaultValue = "") Integer size,
+    public Map query(@RequestParam(value = "page", required = false) Integer page,
+                    @RequestParam(value = "size", required = false) Integer size,
                     @RequestParam(value = "k", defaultValue = "") String key,
                     @RequestParam(value = "v", defaultValue = "") String value){
         LambdaQueryWrapper<T> queryWrapper = service.searchToWrapper(key, value);
+        return page(page, size, queryWrapper);
+    }
+
+    public Map page(Integer page,Integer size,LambdaQueryWrapper<T> queryWrapper){
         if (page != null){
             size = size != null ? size : 10; // 默认十条
             size = size < 0 ? 0 : size;
