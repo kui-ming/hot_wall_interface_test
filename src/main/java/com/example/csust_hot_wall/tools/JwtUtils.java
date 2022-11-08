@@ -78,11 +78,11 @@ public class JwtUtils {
             result = true;
         }catch (JwtException e){
             e.printStackTrace();
-            result = false;
+            System.out.println(e.getMessage());
         }
-        finally {
-            return result;
-        }
+
+        return result;
+
     }
 
     /**

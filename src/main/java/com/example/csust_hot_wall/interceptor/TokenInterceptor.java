@@ -48,7 +48,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
         // 获取token
-        String jwt = request.getHeader("user_token");
+        String jwt = request.getHeader("user-token");
         // 验证token
         if (JwtUtils.checkJWT(jwt)){
             Map<String, Object> payload = JwtUtils.getPayload(jwt);
