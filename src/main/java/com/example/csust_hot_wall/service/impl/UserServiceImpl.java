@@ -86,7 +86,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User login(String openid) {
+    public User login(String openid, String nickname, String img) {
         // 如果已存在openid则不变
         List<User> userList = userMapper.selectByOpenid(openid);
         User user = null;
@@ -94,14 +94,21 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User>
             // 如果不存在openid则增加
             user = new User();
             user.setOpenid(openid);
-            user.setNickname("微信用户");
+            user.setNickname(nickname == null ? "微信用户" : nickname);
+            user.setImgPath(img);
             user.setCreationTime(new Date());
             user.setUpdateTime(new Date());
             if (userMapper.insert(user) < 1) {
                 throw new ResultException("登录时增加用户失败！");
             }
         }
-        else user = userList.get(0);
+        else{
+            user = userList.get(0);
+            user.setImgPath(img);
+            user.setNickname(nickname);
+            userMapper.updateById(user);
+            return user;
+        }
         return user;
     }
 

@@ -50,17 +50,20 @@ public class UserController extends BaseController<User,UserService>{
     public Map login(@RequestBody Map<String,String> data){
         String code = data.get("code");
         if (code == null) return Message.err(Message.Text.QUERY_ERR,"code不存在！");
+        String nickname = data.get("nickname");
+        String img = data.get("img");
         // 通过code从微信拿取openid
         JSONObject res = openIdManage.getOpenId(code);
         System.out.println(res.toString());
         // 狗日的微信文档，在请求成功后没有errcode返回
         if (res.getInteger("errcode") != null && res.getInteger("errcode") != 0)
             return Message.err(res.getString("errmsg"));
-        User user = userService.login(res.getString("openid"));
+        User user = userService.login(res.getString("openid"), nickname, img);
         if (user == null) return Message.err(Message.Text.LOGIN_ERR);
         Map<String, Object> map = new HashMap<>();
         map.put("user_id",user.getId());
         map.put("open_id",user.getOpenid());
+        map.put("nickname", user.getNickname());
         map.put("power","user");
         String jwt = JwtUtils.createJWT(String.valueOf(user.getId()), map, 60 * 60 * 24 * 7);
         map.put("token",jwt);
