@@ -51,6 +51,23 @@ public class LikesController extends BaseController<Likes, LikesService>{
     }
 
     /**
+     * 查询当前用户是否点赞了某篇文章
+     * @param articleId
+     * @return
+     */
+    @GetMapping("info")
+    public Map queryByid(@RequestParam("id") Integer articleId ){
+        Integer uid = getRequest().getUserId();
+        if(uid == null) return Message.err("查询当前用户失败！");
+        Likes likes = new Likes();
+        likes.setArticleId(articleId);
+        likes.setUserId(uid);
+        Likes result = likesService.selectByMultiId(likes);
+        if (result == null) return Message.err("未点赞");
+        return Message.send("已点赞");
+    }
+
+    /**
      * 查询指定用户的点赞文章列表
      * @param uid
      * @return
