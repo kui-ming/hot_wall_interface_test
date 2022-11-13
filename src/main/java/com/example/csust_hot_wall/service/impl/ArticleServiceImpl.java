@@ -119,7 +119,10 @@ public class ArticleServiceImpl extends BaseServiceImpl<ArticleMapper, Article>
         // 作者
         User user = userMapper.selectById(article.getUserId());
         if (user == null) article.setAuthor("未知作者");
-        else article.setAuthor(user.getNickname());
+        else {
+            article.setAuthor(user.getNickname());
+            article.setHead_img(user.getImgPath());
+        }
         // 类别名
         Category category = categoryMapper.selectById(article.getCategoryId());
         if (category == null) article.setCategory("未知类别");

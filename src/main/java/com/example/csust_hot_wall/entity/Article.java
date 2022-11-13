@@ -92,6 +92,9 @@ public class Article extends Entity implements Serializable {
     @TableField(exist = false)
     private String author;
 
+    @TableField(exist = false)
+    private String head_img;
+
     /**
      * 被收藏数
      * @return
