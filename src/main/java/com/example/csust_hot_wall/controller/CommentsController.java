@@ -35,23 +35,18 @@ public class CommentsController extends BaseController<Comments, CommentsService
 
     @PutMapping("/update")
     public Map alter(@RequestBody Comments t){
-        // 只有评论者才能修改
-        if (t.getId() == null) return Message.err(Message.Code.ERR_ATTRIBUTE_MISS);
-        Comments comments = commentsService.getById(t.getId());
-        if (comments == null) return Message.err(Message.Text.ALTER_ERR);
-        if (!comments.getUserId().equals(getRequest().getUserId())) return Message.err(Message.Text.NO_POWER_ERR);
-        return super.alter(t);
+        return Message.err("不能修改评论！");
     }
 
     @DeleteMapping("/del")
     public Map delete(@RequestBody Map<String,Integer[]> map){
         Integer[] ids = map.getOrDefault("ids",new Integer[]{});
-        // 登录用户只能删除自己的收藏
+        // 登录用户只能删除自己的评论
         if ("user".equals(getRequest().getPower())){
             if (getRequest().getUserId() == null) return Message.err();
             List<Comments> commentsList = commentsService.listByIds(Arrays.asList(ids));
             for (Comments comments : commentsList) {
-                // 出现非登录用户的收藏则报错
+                // 出现非登录用户的评论则报错
                 if (!comments.getUserId().equals(getRequest().getUserId())) return Message.err(Message.Text.NO_POWER_ERR);
             }
         }
@@ -87,8 +82,4 @@ public class CommentsController extends BaseController<Comments, CommentsService
         return Message.send(Message.Text.QUERY_SUCCESS,commentsService.listByUserId(userId));
     }
 
-    @GetMapping("/query/rid")
-    public Map queryByReplyId(@RequestParam("id") Integer replyId){
-        return Message.send(Message.Text.QUERY_SUCCESS,commentsService.listByReplyId(replyId));
-    }
 }

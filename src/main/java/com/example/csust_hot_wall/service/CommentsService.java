@@ -22,10 +22,4 @@ public interface CommentsService extends BaseService<Comments> {
      */
     List<Comments> listByUserId(Integer userId);
 
-    /**
-     * 通过父评论查询回复
-     * @param replyId
-     * @return
-     */
-    List<Comments> listByReplyId(Integer replyId);
 }

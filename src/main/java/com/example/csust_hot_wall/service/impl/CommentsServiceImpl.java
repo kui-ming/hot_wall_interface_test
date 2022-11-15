@@ -6,6 +6,7 @@ import com.example.csust_hot_wall.entity.Article;
 import com.example.csust_hot_wall.entity.Comments;
 import com.example.csust_hot_wall.entity.User;
 import com.example.csust_hot_wall.mapper.ArticleMapper;
+import com.example.csust_hot_wall.mapper.ReplyMapper;
 import com.example.csust_hot_wall.mapper.UserMapper;
 import com.example.csust_hot_wall.service.CommentsService;
 import com.example.csust_hot_wall.mapper.CommentsMapper;
@@ -27,6 +28,8 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
     UserMapper userMapper;
     @Autowired
     ArticleMapper articleMapper;
+    @Autowired
+    ReplyMapper replyMapper;
 
 
     @Override
@@ -36,25 +39,13 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
         if (user == null) throw new ResultException("用户无效！");
         Article article = articleMapper.selectById(entity.getArticleId());
         if (article == null) throw new ResultException("文章无效！");
-        // 父评论id存在时判断父评论必须是有效评论
-        if (entity.getReplyId() != null){
-            Comments replyComments = commentsMapper.selectById(entity.getReplyId());
-            if (replyComments == null) throw new ResultException("父评论无效！");
-            // 父评论中的文章id与此评论的文章id必须相同
-            if (!replyComments.getArticleId().equals(article.getId())) throw new ResultException("回复的评论不在指定文章中！");
-        }
         return super.save(entity);
     }
 
     @Override
     public boolean updateById(Comments entity) {
-        // 不能修改时间、父评论、评论用户和文章
-        entity.setCreationTime(null);
-        entity.setUpdateTime(null);
-        entity.setReplyId(null);
-        entity.setUserId(null);
-        entity.setArticleId(null);
-        return super.updateById(entity);
+        // 不能修改
+        return false;
     }
 
     @Override
@@ -70,17 +61,15 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
     }
 
     @Override
-    public List<Comments> listByReplyId(Integer replyId) {
-        return redundancy(commentsMapper.selectByReplyId(replyId));
-    }
-
-    @Override
     protected Comments redundancy(Comments comments) {
-        // 所有评论信息增加评论用户名、文章名、文章作者、文章简介、父评论用户名、父评论信息
+        // 所有评论信息增加评论用户名、用户头像、文章名、文章作者、文章简介、回复数量
         // 用户
         User user = userMapper.selectById(comments.getUserId());
         if (user == null) comments.setAuthor("未知用户");
-        else comments.setAuthor(user.getNickname());
+        else{
+            comments.setAuthor(user.getNickname()); // 昵称
+            comments.setHeadImg(user.getImgPath()); // 头像
+        }
         // 文章相关
         Article article = articleMapper.selectById(comments.getArticleId());
         if (article != null){
@@ -91,19 +80,8 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
             else comments.setArticleAuthor(auser.getNickname());
             comments.setArticleIntro(article.getIntro()); // 文章简介
         }
-        // 父评论，不用递归查询，损耗性能，自己操作mapper
-        if (comments.getReplyId() != null && comments.getReplyId() > 0){
-            Comments replyComments = commentsMapper.selectById(comments.getReplyId());
-            comments.setReplyContent(replyComments.getContent()); // 父评论信息
-            // 谁知父评论用户名
-            if (user != null && user.getId().equals(replyComments.getUserId())){ // 父评论的用户id与评论用户id相同时
-                comments.setReply(user.getNickname());
-            }else { // 查询父评论的用户
-                User replyUser = userMapper.selectById(replyComments.getUserId());
-                if (replyUser == null) comments.setReply("未知用户");
-                else comments.setReply(replyUser.getNickname());
-            }
-        }
+        // 回复数量
+        comments.setReplyCount(replyMapper.countByCommentId(comments.getId()));
         return comments;
     }
 
@@ -133,20 +111,6 @@ public class CommentsServiceImpl extends BaseServiceImpl<CommentsMapper, Comment
         public void search(LambdaQueryWrapper<Comments> wrapper, String value) {
             Integer aid = Integer.parseInt(value);
             wrapper.eq(Comments::getArticleId,aid); // 通过文章id查询
-            wrapper.orderByDesc(Comments::getCreationTime); // 时间倒序
-        }
-    }
-
-    static private class ReplyIdKey extends SearchKey<Comments>{
-        /**
-         * 通过回复id查询
-         */
-        private ReplyIdKey(){super("rid");}
-
-        @Override
-        public void search(LambdaQueryWrapper<Comments> wrapper, String value) {
-            Integer rid = Integer.parseInt(value);
-            wrapper.eq(Comments::getReplyId,rid); // 通过文章id查询
             wrapper.orderByDesc(Comments::getCreationTime); // 时间倒序
         }
     }

@@ -26,12 +26,6 @@ public interface CommentsMapper extends MyBaseMapper<Comments> {
      */
     List<Comments> selectByUserId(@Param("userId") Integer userId);
 
-    /**
-     * 通过父评论查询回复
-     * @param replyId
-     * @return
-     */
-    List<Comments> selectByReplyId(@Param("replyId") Integer replyId);
 
     Comments selectOneByArticleIdOrderByCreationTime(@Param("articleId") Integer articleId);
 

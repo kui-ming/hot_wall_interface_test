@@ -7,7 +7,6 @@
     <resultMap id="BaseResultMap" type="com.example.csust_hot_wall.entity.Comments">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="articleId" column="article_id" jdbcType="INTEGER"/>
-            <result property="replyId" column="reply_id" jdbcType="INTEGER"/>
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="creationTime" column="creation_time" jdbcType="TIMESTAMP"/>
@@ -16,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,article_id,reply_id,
+        id,article_id,
         user_id,content,creation_time,
         update_time,state
     </sql>
@@ -33,13 +32,6 @@
         from comments
         where
         user_id = #{userId,jdbcType=NUMERIC}
-    </select>
-    <select id="selectByReplyId" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from comments
-        where
-        reply_id = #{replyId,jdbcType=NUMERIC}
     </select>
     <select id="countByUserId" resultType="int">
 select count(*)

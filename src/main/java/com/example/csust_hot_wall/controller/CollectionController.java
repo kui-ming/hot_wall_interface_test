@@ -73,9 +73,9 @@ public class CollectionController extends BaseController<Collection, CollectionS
     public Map isCollectArticle(@RequestParam("aid") Integer articleId){
         if (getRequest().getUserId() == null) return Message.err();
         if (collectionService.isCollect(getRequest().getUserId(),articleId)){
-            return Message.send("已收藏");
+            return Message.send("已收藏", true);
         }
-        return Message.err("未收藏");
+        return Message.send("未收藏", false);
     }
 
     /* 查询类 */

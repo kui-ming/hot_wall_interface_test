@@ -9,30 +9,35 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 评论
- * @TableName comments
+ * 
+ * @TableName reply
  */
-@TableName(value ="comments")
+@TableName(value ="reply")
 @Data
-public class Comments extends Entity implements Serializable {
+public class Reply extends Entity implements Serializable {
     /**
-     * 评论编号
+     * 回复编号
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 文章id
+     * 父评论编号
      */
-    private Integer articleId;
+    private Integer commentId;
 
     /**
-     * 用户id
+     * 回复其他回复编号(没有为-1)
+     */
+    private Integer replyId;
+
+    /**
+     * 回复用户id
      */
     private Integer userId;
 
     /**
-     * 内容
+     * 评论内容
      */
     private String content;
 
@@ -51,39 +56,23 @@ public class Comments extends Entity implements Serializable {
      */
     private String state;
 
-    // 所有评论信息增加评论用户名、文章名、文章作者、文章简介、回复用户名、回复评论信息
+    /* 增加用户名、用户头像、回复用户名 */
     /**
-     * 评论作者
+     * 用户昵称
      */
     @TableField(exist = false)
-    private String author;
-
+    private String nickname;
     /**
-     * 头像
+     * 用户头像
      */
     @TableField(exist = false)
     private String headImg;
+    /**
+     * 回复用户名
+     */
+    @TableField(exist = false)
+    private String replyName;
 
-    /**
-     * 文章名
-     */
-    @TableField(exist = false)
-    private String article;
-    /**
-     * 文章作者
-     */
-    @TableField(exist = false)
-    private String articleAuthor;
-    /**
-     * 文章简介
-     */
-    @TableField(exist = false)
-    private String articleIntro;
-    /**
-     * 回复数量
-     */
-    @TableField(exist = false)
-    private Integer replyCount;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -99,9 +88,10 @@ public class Comments extends Entity implements Serializable {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Comments other = (Comments) that;
+        Reply other = (Reply) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getArticleId() == null ? other.getArticleId() == null : this.getArticleId().equals(other.getArticleId()))
+            && (this.getCommentId() == null ? other.getCommentId() == null : this.getCommentId().equals(other.getCommentId()))
+            && (this.getReplyId() == null ? other.getReplyId() == null : this.getReplyId().equals(other.getReplyId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
             && (this.getCreationTime() == null ? other.getCreationTime() == null : this.getCreationTime().equals(other.getCreationTime()))
@@ -114,7 +104,8 @@ public class Comments extends Entity implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getArticleId() == null) ? 0 : getArticleId().hashCode());
+        result = prime * result + ((getCommentId() == null) ? 0 : getCommentId().hashCode());
+        result = prime * result + ((getReplyId() == null) ? 0 : getReplyId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
         result = prime * result + ((getCreationTime() == null) ? 0 : getCreationTime().hashCode());
@@ -130,7 +121,8 @@ public class Comments extends Entity implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", articleId=").append(articleId);
+        sb.append(", commentId=").append(commentId);
+        sb.append(", replyId=").append(replyId);
         sb.append(", userId=").append(userId);
         sb.append(", content=").append(content);
         sb.append(", creationTime=").append(creationTime);
@@ -142,14 +134,15 @@ public class Comments extends Entity implements Serializable {
     }
 
     @Override
-    public Comments stroke() {
-        setId(null);
-        setCreationTime(new Date());
-        setUpdateTime(new Date());
+    public Entity stroke() {
+        this.setId(null);
+        this.setCreationTime(new Date());
+        this.setUpdateTime(new Date());
         return this;
     }
 
+    @Override
     public boolean securityCheck() {
-        return isAllNotNull(articleId,userId,content);
+        return isAllNotNull(commentId,userId,content);
     }
 }

@@ -63,8 +63,9 @@ public class LikesController extends BaseController<Likes, LikesService>{
         likes.setArticleId(articleId);
         likes.setUserId(uid);
         Likes result = likesService.selectByMultiId(likes);
-        if (result == null) return Message.err("未点赞");
-        return Message.send("已点赞");
+        Object b = false;
+        if (result == null) return Message.send("未点赞", false);
+        return Message.send("已点赞", true);
     }
 
     /**

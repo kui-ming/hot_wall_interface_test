@@ -91,7 +91,7 @@ public class Message {
      */
     private static Object dataConversion(Object data){
         if (data == null) return null;
-        // 如果等于Date类型
+        // 如果等于Data类型
         if (data instanceof Message.Data){
             data = ((Data) data).data; // 转换为Map类型
             data = dataConversion(data); // Map类型肯定还要转换一次，使得其属性中的Date类型都得到转换
