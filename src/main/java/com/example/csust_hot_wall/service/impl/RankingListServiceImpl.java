@@ -46,6 +46,8 @@ public class RankingListServiceImpl implements RankingListService {
             wrapper.le(Article::getCreationTime,calendar1.getTime());
             articleList = articleService.list(wrapper);
         }
+        // 清空旧排行榜
+        rankingListManager.clearHot();
         // 计算
         for (Article article : articleList) {
             HotValue hotValue = new HotValue();
@@ -66,6 +68,8 @@ public class RankingListServiceImpl implements RankingListService {
         // 查询发布于一天内的文章
         wrapper.ge(Article::getCreationTime,calendar.getTime());
         List<Article> articleList = articleService.list(wrapper);
+        // 清空旧排行榜
+        rankingListManager.clearNew();
         // 计算
         for (Article article : articleList) {
             HotValue hotValue = new HotValue();

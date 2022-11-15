@@ -133,4 +133,13 @@ public class RankingListManager {
     public void setHotListMaxLength(int hotListMaxLength) {
         this.hotListMaxLength = hotListMaxLength;
     }
+
+    public void clearHot(){
+        this.hotList.clear();
+    }
+
+    public void clearNew(){
+        this.newList.clear();
+    }
+
 }
